@@ -20,7 +20,7 @@ Returns socket.io like middleware function to handle incoming events based on th
 | options.socket | Event emitter |  | websocket/socket.io(client/server)/event emitter |
 | options.router | object |  | routes object |
 
-## `router(options.socket: Event emitter, options.router: object)`
+## `EventRouter(options.socket: Event emitter, options.router: object)`
 
 Responds to events based on their route and a router
 

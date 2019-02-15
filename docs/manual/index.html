@@ -73,6 +73,42 @@
 
 <div class="content" data-ice="content"><div class="github-markdown">
   <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="simple-socket-router">simple-socket-router</h1><p>Simple express-like socket routing for websockets, event emitters and socket.io </p>
+<p>This is a simple way to avoid having to write a bunch of <code>event.on</code> handlers for larger applications. You can simply define routes and pass in your event emitter/websocket/socket.io(client|sever) and handle routes that way</p>
+<h2 id="example">Example</h2><p>This works for both socket servers and clients</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// SERVER CODE
+import {Router,EventRouter} from &apos;simple-socket-router&apos;;
+import Server from &apos;socket.io&apos;;
+const ioServer = new Server();
+// Router - npm module &apos;routes&apos;;
+const router = new Router();
+router.addRoute(&apos;/test/users&apos;, function(req, res){
+  console.log(&apos;Got data from client Handler&apos;);
+  res.send(&apos;ok&apos;);
+});
+router.addRoute(&apos;/account/:username&apos;, async (req, res)=&gt;{
+  console.log(&apos;In Account Handler&apos;);
+  const user = await db.getUser(req.params.user);
+  res.send({user);
+});
+
+ioServer.on(&apos;connection&apos;,socket=&gt;{
+  EventRouter({router,socket});
+})</code>
+</code></pre>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// Client CODE
+import {Router,EventRouter} from &apos;simple-socket-router&apos;;
+import io from &apos;socket.io-client&apos;;
+const socket = io(&apos;http://localhost&apos;);
+// Router - npm module &apos;routes&apos;;
+const router = new Router();
+router.addRoute(&apos;/live/updates&apos;, function(req, res){
+  console.log(&apos;Got message from server&apos;,{update:req.body});
+});
+
+socket.on(&apos;connect&apos;,()=&gt;{
+  EventRouter({router,socket});
+})</code>
+</code></pre>
 </div>
 
   

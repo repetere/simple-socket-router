@@ -1,12 +1,14 @@
 {
-  "coverage": "100%",
-  "expectCount": 3,
+  "coverage": "75%",
+  "expectCount": 4,
   "actualCount": 3,
   "files": {
     "lib/router.mjs": {
-      "expectCount": 3,
+      "expectCount": 4,
       "actualCount": 3,
-      "undocumentLines": []
+      "undocumentLines": [
+        2
+      ]
     }
   }
 }

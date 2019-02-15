@@ -35,15 +35,18 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-router">router</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventRouter">EventRouter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-routerMiddleware">routerMiddleware</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Router">Router</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/router.mjs</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import RoutesModule from &apos;routes&apos;;
+export const Router = RoutesModule;
+
 /**
  * Catches all events on event emitter passed to the function
  * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events
@@ -104,7 +107,7 @@ export function routerMiddleware({ socket, router,  }) {
  * @param {object} options.router - routes object 
  * @see https://www.npmjs.com/package/routes
  */
-export function router({ socket, router,  }) {
+export function EventRouter({ socket, router,  }) {
   if (socket.use) {
     socket.use(routerMiddleware({ socket, router,  }));
   } else {

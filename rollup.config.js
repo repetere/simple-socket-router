@@ -25,7 +25,7 @@ export default [
           // left-hand side can be an absolute path, a path
           // relative to the current directory, or the name
           // of a module in node_modules
-          // 'node_modules/fingerprint2/fingerprint2.js': [ 'Fingerprint2', ],
+          // 'node_modules/routes/dist/routes.js': [ 'Routes', ],
         },
       }), // so Rollup can convert `ms` to an ES module
       builtins({

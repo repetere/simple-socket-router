@@ -1,1 +1,1 @@
-export { router, } from './lib/router';
+export { Router, EventRouter, } from './lib/router';

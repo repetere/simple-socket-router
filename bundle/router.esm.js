@@ -1,3 +1,7 @@
+import RoutesModule from 'routes';
+
+const Router = RoutesModule;
+
 /**
  * Catches all events on event emitter passed to the function
  * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events
@@ -58,7 +62,7 @@ function routerMiddleware({ socket, router,  }) {
  * @param {object} options.router - routes object 
  * @see https://www.npmjs.com/package/routes
  */
-function router({ socket, router,  }) {
+function EventRouter({ socket, router,  }) {
   if (socket.use) {
     socket.use(routerMiddleware({ socket, router,  }));
   } else {
@@ -66,4 +70,4 @@ function router({ socket, router,  }) {
   }
 }
 
-export { router };
+export { Router, EventRouter };

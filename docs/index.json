@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "lib/router.mjs",
-    "content": "\r\n/**\r\n * Catches all events on event emitter passed to the function\r\n * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events\r\n * @param {Function} handler - socket.io like middleware (calls handler with packet and next) \r\n */\r\nexport function patchEmitter(emitter, handler) {\r\n  emitter._onevent = emitter.onevent;\r\n  const next = () => { };\r\n  // Replace the onevent function with a handler that captures all messages\r\n  emitter.onevent = function (packet) {\r\n    handler(packet.data, next);\r\n    // DO NOT USE https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments\r\n    // emitter._onevent.apply(emitter, Array.prototype.slice.call(arguments));\r\n    const args = new Array(arguments.length);\r\n    for(var i = 0; i < args.length; ++i) {\r\n      args[i] = arguments[i];\r\n    }\r\n    emitter._onevent.apply(emitter, args);\r\n  };\r\n}\r\n\r\n/**\r\n * Returns socket.io like middleware function to handle incoming events based on their path\r\n * @param {Event emitter} options.socket - websocket/socket.io(client/server)/event emitter\r\n * @param {object} options.router - routes object \r\n * @see https://www.npmjs.com/package/routes\r\n * @return {function} router handler middleware function\r\n */\r\nexport function routerMiddleware({ socket, router,  }) {\r\n  return async function routeHandler(packet, next) {\r\n    // console.log({ packet, socket });\r\n    const [path, body,] = packet;\r\n    const match = router.match(path);\r\n    const req = { path, body, socket, };\r\n    let cb = (data) => data;\r\n    const res = {\r\n      send(data) {\r\n        try {\r\n          socket.emit(path, cb(data));\r\n          cb = null;\r\n        } catch (e) {\r\n          socket.emit('error', new Error('Response already sent'));\r\n        }\r\n      },\r\n    };\r\n    if (match) {\r\n      req.params = match.params;\r\n      req.splats = match.splats;\r\n      match.fn(req, res, match);\r\n    }\r\n    next();\r\n  };\r\n}\r\n\r\n/**\r\n * Responds to events based on their route and a router\r\n * @param {Event emitter} options.socket - websocket/socket.io(client/server)/event emitter\r\n * @param {object} options.router - routes object \r\n * @see https://www.npmjs.com/package/routes\r\n */\r\nexport function router({ socket, router,  }) {\r\n  if (socket.use) {\r\n    socket.use(routerMiddleware({ socket, router,  }));\r\n  } else {\r\n    patchEmitter(socket, routerMiddleware({ socket, router,  }));\r\n  }\r\n}",
+    "content": "import RoutesModule from 'routes';\r\nexport const Router = RoutesModule;\r\n\r\n/**\r\n * Catches all events on event emitter passed to the function\r\n * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events\r\n * @param {Function} handler - socket.io like middleware (calls handler with packet and next) \r\n */\r\nexport function patchEmitter(emitter, handler) {\r\n  emitter._onevent = emitter.onevent;\r\n  const next = () => { };\r\n  // Replace the onevent function with a handler that captures all messages\r\n  emitter.onevent = function (packet) {\r\n    handler(packet.data, next);\r\n    // DO NOT USE https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments\r\n    // emitter._onevent.apply(emitter, Array.prototype.slice.call(arguments));\r\n    const args = new Array(arguments.length);\r\n    for(var i = 0; i < args.length; ++i) {\r\n      args[i] = arguments[i];\r\n    }\r\n    emitter._onevent.apply(emitter, args);\r\n  };\r\n}\r\n\r\n/**\r\n * Returns socket.io like middleware function to handle incoming events based on their path\r\n * @param {Event emitter} options.socket - websocket/socket.io(client/server)/event emitter\r\n * @param {object} options.router - routes object \r\n * @see https://www.npmjs.com/package/routes\r\n * @return {function} router handler middleware function\r\n */\r\nexport function routerMiddleware({ socket, router,  }) {\r\n  return async function routeHandler(packet, next) {\r\n    // console.log({ packet, socket });\r\n    const [path, body,] = packet;\r\n    const match = router.match(path);\r\n    const req = { path, body, socket, };\r\n    let cb = (data) => data;\r\n    const res = {\r\n      send(data) {\r\n        try {\r\n          socket.emit(path, cb(data));\r\n          cb = null;\r\n        } catch (e) {\r\n          socket.emit('error', new Error('Response already sent'));\r\n        }\r\n      },\r\n    };\r\n    if (match) {\r\n      req.params = match.params;\r\n      req.splats = match.splats;\r\n      match.fn(req, res, match);\r\n    }\r\n    next();\r\n  };\r\n}\r\n\r\n/**\r\n * Responds to events based on their route and a router\r\n * @param {Event emitter} options.socket - websocket/socket.io(client/server)/event emitter\r\n * @param {object} options.router - routes object \r\n * @see https://www.npmjs.com/package/routes\r\n */\r\nexport function EventRouter({ socket, router,  }) {\r\n  if (socket.use) {\r\n    socket.use(routerMiddleware({ socket, router,  }));\r\n  } else {\r\n    patchEmitter(socket, routerMiddleware({ socket, router,  }));\r\n  }\r\n}",
     "static": true,
     "longname": "/Users/yawjosephetse/Developer/github/repetere/simple-socket-router/lib/router.mjs",
     "access": "public",
@@ -12,6 +12,21 @@
   },
   {
     "__docId__": 1,
+    "kind": "variable",
+    "name": "Router",
+    "memberof": "lib/router.mjs",
+    "static": true,
+    "longname": "lib/router.mjs~Router",
+    "access": "public",
+    "export": true,
+    "importPath": "simple-socket-router/lib/router.mjs",
+    "importStyle": "{Router}",
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true
+  },
+  {
+    "__docId__": 2,
     "kind": "function",
     "name": "patchEmitter",
     "memberof": "lib/router.mjs",
@@ -24,7 +39,7 @@
     "importPath": "simple-socket-router/lib/router.mjs",
     "importStyle": "{patchEmitter}",
     "description": "Catches all events on event emitter passed to the function",
-    "lineNumber": 7,
+    "lineNumber": 9,
     "params": [
       {
         "nullable": null,
@@ -49,7 +64,7 @@
     ]
   },
   {
-    "__docId__": 2,
+    "__docId__": 3,
     "kind": "function",
     "name": "routerMiddleware",
     "memberof": "lib/router.mjs",
@@ -65,7 +80,7 @@
     "see": [
       "https://www.npmjs.com/package/routes"
     ],
-    "lineNumber": 30,
+    "lineNumber": 32,
     "params": [
       {
         "nullable": null,
@@ -98,23 +113,23 @@
     }
   },
   {
-    "__docId__": 3,
+    "__docId__": 4,
     "kind": "function",
-    "name": "router",
+    "name": "EventRouter",
     "memberof": "lib/router.mjs",
     "generator": false,
     "async": false,
     "static": true,
-    "longname": "lib/router.mjs~router",
+    "longname": "lib/router.mjs~EventRouter",
     "access": "public",
     "export": true,
     "importPath": "simple-socket-router/lib/router.mjs",
-    "importStyle": "{router}",
+    "importStyle": "{EventRouter}",
     "description": "Responds to events based on their route and a router",
     "see": [
       "https://www.npmjs.com/package/routes"
     ],
-    "lineNumber": 62,
+    "lineNumber": 64,
     "params": [
       {
         "nullable": null,
@@ -140,7 +155,7 @@
   },
   {
     "kind": "index",
-    "content": "# simple-socket-router\nSimple express-like socket routing for websockets, event emitters and socket.io \n",
+    "content": "# simple-socket-router\nSimple express-like socket routing for websockets, event emitters and socket.io \n\nThis is a simple way to avoid having to write a bunch of `event.on` handlers for larger applications. You can simply define routes and pass in your event emitter/websocket/socket.io(client|sever) and handle routes that way\n\n## Example\n\nThis works for both socket servers and clients\n```javascript\n// SERVER CODE\nimport {Router,EventRouter} from 'simple-socket-router';\nimport Server from 'socket.io';\nconst ioServer = new Server();\n// Router - npm module 'routes';\nconst router = new Router();\nrouter.addRoute('/test/users', function(req, res){\n  console.log('Got data from client Handler');\n  res.send('ok');\n});\nrouter.addRoute('/account/:username', async (req, res)=>{\n  console.log('In Account Handler');\n  const user = await db.getUser(req.params.user);\n  res.send({user);\n});\n\nioServer.on('connection',socket=>{\n  EventRouter({router,socket});\n})\n```\n\n```javascript\n// Client CODE\nimport {Router,EventRouter} from 'simple-socket-router';\nimport io from 'socket.io-client';\nconst socket = io('http://localhost');\n// Router - npm module 'routes';\nconst router = new Router();\nrouter.addRoute('/live/updates', function(req, res){\n  console.log('Got message from server',{update:req.body});\n});\n\nsocket.on('connect',()=>{\n  EventRouter({router,socket});\n})\n```\n",
     "longname": "/Users/yawjosephetse/Developer/github/repetere/simple-socket-router/README.md",
     "name": "./README.md",
     "static": true,
@@ -148,7 +163,7 @@
   },
   {
     "kind": "manualIndex",
-    "content": "# simple-socket-router\nSimple express-like socket routing for websockets, event emitters and socket.io \n",
+    "content": "# simple-socket-router\nSimple express-like socket routing for websockets, event emitters and socket.io \n\nThis is a simple way to avoid having to write a bunch of `event.on` handlers for larger applications. You can simply define routes and pass in your event emitter/websocket/socket.io(client|sever) and handle routes that way\n\n## Example\n\nThis works for both socket servers and clients\n```javascript\n// SERVER CODE\nimport {Router,EventRouter} from 'simple-socket-router';\nimport Server from 'socket.io';\nconst ioServer = new Server();\n// Router - npm module 'routes';\nconst router = new Router();\nrouter.addRoute('/test/users', function(req, res){\n  console.log('Got data from client Handler');\n  res.send('ok');\n});\nrouter.addRoute('/account/:username', async (req, res)=>{\n  console.log('In Account Handler');\n  const user = await db.getUser(req.params.user);\n  res.send({user);\n});\n\nioServer.on('connection',socket=>{\n  EventRouter({router,socket});\n})\n```\n\n```javascript\n// Client CODE\nimport {Router,EventRouter} from 'simple-socket-router';\nimport io from 'socket.io-client';\nconst socket = io('http://localhost');\n// Router - npm module 'routes';\nconst router = new Router();\nrouter.addRoute('/live/updates', function(req, res){\n  console.log('Got message from server',{update:req.body});\n});\n\nsocket.on('connect',()=>{\n  EventRouter({router,socket});\n})\n```\n",
     "longname": "/Users/yawjosephetse/Developer/github/repetere/simple-socket-router/README.md",
     "name": "./README.md",
     "static": true,

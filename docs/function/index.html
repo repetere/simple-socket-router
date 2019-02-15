@@ -35,9 +35,10 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-router">router</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventRouter">EventRouter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-routerMiddleware">routerMiddleware</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Router">Router</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -61,13 +62,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span><span class="code" data-ice="signature">(emitter: <span>Event Emitter</span>, handler: <span>Function</span>)</span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-EventRouter">EventRouter</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Catches all events on event emitter passed to the function</p>
+        <div data-ice="description"><p>Responds to events based on their route and a router</p>
 </div>
       </div>
     </td>
@@ -90,13 +91,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-router">router</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-patchEmitter">patchEmitter</a></span></span><span class="code" data-ice="signature">(emitter: <span>Event Emitter</span>, handler: <span>Function</span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Responds to events based on their route and a router</p>
+        <div data-ice="description"><p>Catches all events on event emitter passed to the function</p>
 </div>
       </div>
     </td>
@@ -140,90 +141,22 @@
 <div data-ice="details"><h2 data-ice="title">Static Public </h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-function-patchEmitter">
+  <h3 data-ice="anchor" id="static-function-EventRouter">
     <span class="access" data-ice="access">public</span>
     
     
     
     
     
-    <span class="code" data-ice="name">patchEmitter</span><span class="code" data-ice="signature">(emitter: <span>Event Emitter</span>, handler: <span>Function</span>)</span>
+    <span class="code" data-ice="name">EventRouter</span><span class="code" data-ice="signature">()</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber7">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber64">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {patchEmitter} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber7">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
-  
-  
-  <div data-ice="description"><p>Catches all events on event emitter passed to the function</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">emitter</td>
-      <td data-ice="type" class="code"><span>Event Emitter</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>websocket/socket.io(client/server)/event emitter to intercept all incoming events</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">handler</td>
-      <td data-ice="type" class="code"><span>Function</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>socket.io like middleware (calls handler with packet and next)</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-function-router">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">router</span><span class="code" data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber62">source</a></span></span>
-    </span>
-  </h3>
-
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {router} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber62">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {EventRouter} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber64">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Responds to events based on their route and a router</p>
@@ -276,6 +209,74 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-patchEmitter">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">patchEmitter</span><span class="code" data-ice="signature">(emitter: <span>Event Emitter</span>, handler: <span>Function</span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber9">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {patchEmitter} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber9">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Catches all events on event emitter passed to the function</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">emitter</td>
+      <td data-ice="type" class="code"><span>Event Emitter</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>websocket/socket.io(client/server)/event emitter to intercept all incoming events</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">handler</td>
+      <td data-ice="type" class="code"><span>Function</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>socket.io like middleware (calls handler with packet and next)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-function-routerMiddleware">
     <span class="access" data-ice="access">public</span>
     
@@ -287,11 +288,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber30">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/router.mjs.html#lineNumber32">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {routerMiddleware} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber30">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {routerMiddleware} from &apos;<span><a href="file/lib/router.mjs.html#lineNumber32">simple-socket-router/lib/router.mjs</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Returns socket.io like middleware function to handle incoming events based on their path</p>
