@@ -37,7 +37,7 @@ function patchEmitter(emitter, handler) {
  * @return {function} router handler middleware function
  */
 function routerMiddleware({ socket, router,  }) {
-  return async function routeHandler(packet, next) {
+  return function routeHandler(packet, next) {
     // console.log({ packet, socket });
     const [path, body,] = packet;
     const match = router.match(path);
