@@ -1,6 +1,6 @@
 {
   "name": "simple-socket-router",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Simple express-like socket routing for websockets, event emitters and socket.io ",
   "main": "index.mjs",
   "module": "index.mjs",

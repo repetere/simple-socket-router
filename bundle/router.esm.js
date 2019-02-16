@@ -1,4 +1,4 @@
-import RoutesModule from 'routes';
+import RoutesModule from 'routes/index';
 
 const Router = RoutesModule;
 
