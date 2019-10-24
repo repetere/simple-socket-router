@@ -1,16 +1,18 @@
+// @ts-ignore
 import RoutesModule from 'routes/index';
-export const Router = RoutesModule;
+import * as types from './types';
+export const Router:types.Router = RoutesModule;
 
 /**
  * Catches all events on event emitter passed to the function
  * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events
  * @param {Function} handler - socket.io like middleware (calls handler with packet and next) 
  */
-export function patchEmitter(emitter, handler) {
+export function patchEmitter(emitter:types.socket, handler:types.handler) {
   emitter._onevent = emitter.onevent;
   const next = () => { };
   // Replace the onevent function with a handler that captures all messages
-  emitter.onevent = function (packet) {
+  emitter.onevent = function (packet: types.dataPacket) {
     handler(packet.data, next);
     // DO NOT USE https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
     // emitter._onevent.apply(emitter, Array.prototype.slice.call(arguments));
@@ -18,7 +20,7 @@ export function patchEmitter(emitter, handler) {
     for(var i = 0; i < args.length; ++i) {
       args[i] = arguments[i];
     }
-    emitter._onevent.apply(emitter, args);
+    if(emitter._onevent) emitter._onevent.apply(emitter, args);
   };
 }
 
@@ -29,15 +31,15 @@ export function patchEmitter(emitter, handler) {
  * @see https://www.npmjs.com/package/routes
  * @return {function} router handler middleware function
  */
-export function routerMiddleware({ socket, router,  }) {
-  return function routeHandler(packet, next) {
+export function routerMiddleware({ socket, router,  }:types.middlerwareOptions):(...args: any[])=>void {
+  return function routeHandler(packet:types.packet, next:()=>void) {
     // console.log({ packet, socket });
     const [path, body,] = packet;
     const match = router.match(path);
-    const req = { path, body, socket, };
-    let cb = (data) => data;
+    const req:types.routerRequest = { path, body, socket, };
+    let cb:any = (data:any) => data;
     const res = {
-      send(data) {
+      send(data:any) {
         try {
           socket.emit(path, cb(data));
           cb = null;
@@ -61,7 +63,7 @@ export function routerMiddleware({ socket, router,  }) {
  * @param {object} options.router - routes object 
  * @see https://www.npmjs.com/package/routes
  */
-export function EventRouter({ socket, router,  }) {
+export function EventRouter({ socket, router,  }:types.middlerwareOptions) {
   if (socket.use) {
     socket.use(routerMiddleware({ socket, router,  }));
   } else {

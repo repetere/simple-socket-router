@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - "10"
-  - "8"
 env:
   - CXX=g++-4.8
 addons:
@@ -27,7 +26,7 @@ notifications:
     skip_join: false
 
 install:
-  - npm install  mocha nyc @std/esm -g
+  - npm install nyc typescript jest -g
   - npm install 
   # - npm install --skip_app_post_install=true
 

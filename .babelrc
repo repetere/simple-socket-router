@@ -1,4 +1,6 @@
 {
-  "presets": ["env","es2017"],
-  "plugins": ["istanbul"]
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-typescript"
+  ]
 }
