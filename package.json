@@ -1,6 +1,6 @@
 {
   "name": "simple-socket-router",
-  "version": "0.9.4",
+  "version": "1.0.0",
   "description": "Simple express-like socket routing for websockets, event emitters and socket.io ",
   "main": "bundle/router.cjs.js",
   "module": "bundle/router.esm.js",
@@ -12,7 +12,7 @@
   "scripts": {
     "test": "jest --coverage",
     "doc": "esdoc",
-    "compile":"tsc",
+    "compile": "tsc",
     "build": "tsc && rollup -c && esdoc",
     "coverage": "nyc report  --temp-directory=coverage --reporter=text-lcov | coveralls"
   },
