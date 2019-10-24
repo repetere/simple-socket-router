@@ -4,12 +4,13 @@ import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
 import pkg from './package.json';
 import { terser, } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript';
 
 
 export default [
   // browser-friendly UMD build
   {
-    input: 'index.mjs',
+    input: 'dist/index.js',
     output: {
       exports: 'named',
       file: pkg.browser,
@@ -17,6 +18,38 @@ export default [
       format: 'umd',
     },
     plugins: [
+      typescript(),
+      resolve({
+        preferBuiltins: true,
+      }), // so Rollup can find `ms`
+      commonjs({
+        namedExports: {
+          // left-hand side can be an absolute path, a path
+          // relative to the current directory, or the name
+          // of a module in node_modules
+        },
+      }), // so Rollup can convert `ms` to an ES module
+      builtins({
+      }),
+      globals({
+      }),
+      terser({
+        // screwIE8 : true,
+        // sourceMap: false
+      }),
+    ],
+  },
+  // browser-friendly IIFE
+  {
+    input: 'dist/index.js',
+    output: {
+      exports: 'named',
+      file: pkg.web,
+      name: 'els',
+      format: 'iife',
+    },
+    plugins: [
+      typescript(),
       resolve({
         preferBuiltins: true,
       }), // so Rollup can find `ms`
@@ -46,11 +79,11 @@ export default [
   // an array for the `output` option, where we can specify 
   // `file` and `format` for each target)
   {
-    input: 'index.mjs',
+    input: 'dist/index.js',
     external: [
       // '@tensorflow/tfjs',
       // 'lodash.range',
-      // 'lodash.rangeright'
+      'routes/index'
     ],
     output: [
       {
@@ -66,5 +99,8 @@ export default [
         format: 'es',
       },
     ],
+    // plugins: [
+    //   typescript()
+    // ]
   },
 ];

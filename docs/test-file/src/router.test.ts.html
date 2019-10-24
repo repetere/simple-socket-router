@@ -1,0 +1,147 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/router.test.ts | Event Logger Shopify</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-112697260-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-112697260-2');
+  </script><meta name="description" content="Logging Shopify Click Events"><meta property="og:type" content="website"><meta property="og:url" content="https://jewelml.github.io/event_logger_shopify"><meta property="og:site_name" content="Event Logger Shopify"><meta property="og:title" content="Event Logger Shopify"><meta property="og:image" content="https://jewelml.com/favicon.png"><meta property="og:description" content="Logging Shopify Click Events"><meta property="og:author" content="https://github.com/jewelml"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="Event Logger Shopify"><meta property="twitter:description" content="Logging Shopify Click Events"><meta property="twitter:image" content="https://jewelml.com/favicon.png"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/jewelml/event_logger_shopify"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/router.test.ts</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Router, EventRouter, routerMiddleware,patchEmitter, } from &apos;./router&apos;;
+import { expect, } from &apos;chai&apos;;
+import { EventEmitter } from &apos;events&apos;;
+const mockCallback = jest.fn(x =&gt; {
+  // console.log(&apos;jest func arguments&apos;, arguments);
+  return x;
+});
+
+const router = new Router();
+router.addRoute(&quot;/articles/:title?&quot;, mockCallback);
+describe(&apos;Simple Socket Router&apos;, () =&gt; {
+  describe(&apos;Router&apos;, () =&gt; {
+    it(&apos;should match routes&apos;, () =&gt; {
+      const articleRoute = router.match(&quot;/articles&quot;);
+      expect(articleRoute.params.title).to.eql(undefined);
+      const articleRouteTitle = router.match(&quot;/articles/never-gonna-let-you-down&quot;);
+      expect(articleRouteTitle.params.title).to.eql(&apos;never-gonna-let-you-down&apos;);
+      // console.log(router.match(&quot;/posts/show/1.json&quot;));
+    });
+  });
+  describe(&apos;EventRouter&apos;, () =&gt; {
+    describe(&apos;routerMiddleware&apos;,  () =&gt; {
+      it(&apos;should handle matched route callbacks&apos;, done =&gt; {
+        try {
+          const pathname = &quot;/posts/show/1.json&quot;;
+          const actionCallback = jest.fn((req, res, match) =&gt; {
+            res.send(true);
+          });
+          router.addRoute(&quot;/:controller/:action/:id.:format?&quot;, actionCallback);
+    
+          const socket = new EventEmitter();
+          socket.on(pathname, (data) =&gt; {
+            expect(data).to.be.ok;
+            done();
+          });
+          const handler = routerMiddleware({ socket, router });
+          const packet = [pathname, { author: &apos;bob&apos;, profile: &apos;n/a&apos; }];
+          const next = jest.fn(x =&gt; x);
+          handler(packet, next);
+          expect(actionCallback.mock.calls.length).to.eql(1);
+          expect(next.mock.calls.length).to.eql(1);
+         
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+    describe(&apos;patchEmitter&apos;,  () =&gt; {
+      it(&apos;should handle matched route callbacks&apos;, done =&gt; {
+        try {
+          const pathname = &quot;/data/packet/20.json&quot;;
+          const actionCallback = jest.fn((req, res, match) =&gt; {
+            res.send(true);
+          });
+          router.addRoute(&quot;/data/:call/:id.:format?&quot;, actionCallback);
+    
+          const socket = new EventEmitter();
+          socket.on(pathname, (data) =&gt; {
+            expect(data).to.be.ok;
+            done();
+          });
+          const handler = routerMiddleware({ socket, router });
+          const packet = {
+            data: [pathname, { author: &apos;bob&apos;, profile: &apos;n/a&apos; }],
+          };
+          patchEmitter(socket, handler);
+          socket.onevent(packet);
+         
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+    describe(&apos;EventRouter&apos;,  () =&gt; {
+      it(&apos;should handle matched route callbacks&apos;, done =&gt; {
+        try {
+          const socket = new EventEmitter();
+          EventRouter({ socket, router });
+          expect(socket.onevent).to.be.a(&apos;function&apos;);
+          done();
+         
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
+})</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+
+
+</body></html>

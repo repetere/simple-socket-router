@@ -1,13 +1,12 @@
-import RoutesModule from 'routes/index';
-
 // @ts-ignore
-const Router = RoutesModule;
+import RoutesModule from 'routes/index';
+export const Router = RoutesModule;
 /**
  * Catches all events on event emitter passed to the function
  * @param {Event Emitter} emitter - websocket/socket.io(client/server)/event emitter to intercept all incoming events
  * @param {Function} handler - socket.io like middleware (calls handler with packet and next)
  */
-function patchEmitter(emitter, handler) {
+export function patchEmitter(emitter, handler) {
     emitter._onevent = emitter.onevent;
     const next = () => { };
     // Replace the onevent function with a handler that captures all messages
@@ -30,7 +29,7 @@ function patchEmitter(emitter, handler) {
  * @see https://www.npmjs.com/package/routes
  * @return {function} router handler middleware function
  */
-function routerMiddleware({ socket, router, }) {
+export function routerMiddleware({ socket, router, }) {
     return function routeHandler(packet, next) {
         // console.log({ packet, socket });
         const [path, body,] = packet;
@@ -62,7 +61,7 @@ function routerMiddleware({ socket, router, }) {
  * @param {object} options.router - routes object
  * @see https://www.npmjs.com/package/routes
  */
-function EventRouter({ socket, router, }) {
+export function EventRouter({ socket, router, }) {
     if (socket.use) {
         socket.use(routerMiddleware({ socket, router, }));
     }
@@ -70,5 +69,3 @@ function EventRouter({ socket, router, }) {
         patchEmitter(socket, routerMiddleware({ socket, router, }));
     }
 }
-
-export { Router, EventRouter };
